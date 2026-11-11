@@ -22,7 +22,7 @@ jobs:
       run: dotnet workload install ios wasm-tools-net8
       
     - name: Restore NuGet Packages
-      run: dotnet restore ./src/NSWallet/iOS/NSWallet.iOS.csproj
+      run: dotnet restore ./src/NSWallet/iOS/NSWallet.iOS.csproj -p:CheckEolTargetFramework=false
 
     - name: Publish iOS App (Unsigned IPA)
       run: |
@@ -34,6 +34,7 @@ jobs:
           -p:CodesignRequire=false \
           -p:CodesignKey="" \
           -p:CodesignProvision="" \
+          -p:CheckEolTargetFramework=false \
           -o $RUNNER_TEMP/output
 
     - name: Upload IPA Artifact
