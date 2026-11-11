@@ -1,4 +1,4 @@
-name: Build .NET iOS IPA
+name: Build .NET 8 iOS IPA
 
 on:
   push:
@@ -6,34 +6,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-ios:
-    runs-on: macos-15 # Cloud macOS runner
+  build:
+    runs-on: macos-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      
-    - name: Install Boots Bootstrapper
-      run: dotnet tool install --global boots
 
-    - name: Install Xamarin.iOS via Boots
-      run: boots --stable Xamarin.iOS
-      
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x' # Adjust to match project version (e.g., 7.0, 8.0, 9.0)
+        dotnet-version: '8.0.x'
 
-    - name: Install iOS Workloads
-      run: dotnet workload install ios
-      
-    #- name: List workspace contents
-    #  run: ls -R
-      
-    - name: Restore dependencies
-      run: dotnet restore ./src/NSWallet/NSWallet.sln # Replace with your .sln file name
+    - name: Restore NuGet Packages
+      run: dotnet restore ./src/NSWallet/iOS/NSWallet.iOS.csproj
 
-    - name: Build and Package Unsigned IPA
+    - name: Publish iOS App (Unsigned IPA)
       run: |
         dotnet publish ./src/NSWallet/iOS/NSWallet.iOS.csproj \
           -c Release \
@@ -45,19 +33,8 @@ jobs:
           -p:CodesignProvision="" \
           -o $RUNNER_TEMP/output
 
-    - name: Locate and Package IPA File
-      run: |
-        mkdir -p $RUNNER_TEMP/ipa_out
-        find $RUNNER_TEMP/output -name "*.ipa" -exec cp {} $RUNNER_TEMP/ipa_out/ \; || true
-        # Fallback zip packaging if raw bin app folder was generated
-        if [ -z "$(ls -A $RUNNER_TEMP/ipa_out)" ]; then
-          mkdir -p $RUNNER_TEMP/Payload
-          cp -R $RUNNER_TEMP/output/*.app $RUNNER_TEMP/Payload/ 2>/dev/null || true
-          cd $RUNNER_TEMP && zip -r ipa_out/unsigned-app.ipa Payload
-        fi
-
     - name: Upload IPA Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: unsigned-visual-studio-ipa
-        path: ${{ runner.temp }}/ipa_out/*.ipa
+        name: nswallet-net8-ipa
+        path: ${{ runner.temp }}/output/*.ipa
