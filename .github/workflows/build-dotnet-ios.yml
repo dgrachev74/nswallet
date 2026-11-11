@@ -24,7 +24,7 @@ jobs:
         xcode-version: '26.6.0' # Matches the stable runner environment
 
     - name: Install Compatible iOS Workload
-      run: dotnet workload install ios --skip-manifest-update #--version 10.0.100 # Pins to the workload version built for Xcode 26.
+      run: dotnet workload install ios --version 10.0.402 #--skip-manifest-update # Pins to the workload version built for Xcode 26.
 
     - name: Restore NuGet Packages
       run: dotnet restore ./src/NSWallet/iOS/NSWallet.iOS.csproj -p:ValidateXcodeVersion=false
