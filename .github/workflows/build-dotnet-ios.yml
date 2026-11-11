@@ -28,7 +28,10 @@ jobs:
 
     - name: Restore NuGet Packages
       run: dotnet restore ./src/NSWallet/iOS/NSWallet.iOS.csproj -p:ValidateXcodeVersion=false
-
+      
+    - name: add package Microsoft.Maui.Controls.Compatibility  
+      run: dotnet add package Microsoft.Maui.Controls.Compatibility
+      
     - name: Publish iOS App (Unsigned IPA)
       run: |
         dotnet publish ./src/NSWallet/iOS/NSWallet.iOS.csproj \
