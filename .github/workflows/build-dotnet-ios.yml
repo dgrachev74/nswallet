@@ -7,12 +7,18 @@ on:
 
 jobs:
   build-ios:
-    runs-on: macos-15 # Cloud macOS runner
+    runs-on: macos-13 # Cloud macOS runner
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      
+    - name: Install Boots Bootstrapper
+      run: dotnet tool install --global boots
 
+    - name: Install Xamarin.iOS via Boots
+      run: boots --stable Xamarin.iOS
+      
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
