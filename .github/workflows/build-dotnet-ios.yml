@@ -17,7 +17,12 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '10.0.x'  # Match .NET 10
-
+    
+    - name: Select Xcode Version
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '27.2' # Matches the exact version your .NET iOS workload expects
+        
     - name: Install Required Workloads
       run: dotnet workload install ios
 
