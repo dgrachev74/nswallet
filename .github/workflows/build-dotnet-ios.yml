@@ -1,4 +1,4 @@
-name: Build .NET 8 iOS IPA
+name: Build .NET 10 iOS IPA
 
 on:
   push:
@@ -16,29 +16,28 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x'
-        
+        dotnet-version: '10.0.x'  # Match .NET 10
+
     - name: Install Required Workloads
-      run: dotnet workload install ios wasm-tools-net8
-      
+      run: dotnet workload install ios
+
     - name: Restore NuGet Packages
-      run: dotnet restore ./src/NSWallet/iOS/NSWallet.iOS.csproj -p:CheckEolTargetFramework=false
+      run: dotnet restore ./src/NSWallet/iOS/NSWallet.iOS.csproj
 
     - name: Publish iOS App (Unsigned IPA)
       run: |
         dotnet publish ./src/NSWallet/iOS/NSWallet.iOS.csproj \
           -c Release \
-          -f net8.0-ios \
+          -f net10.0-ios \
           -p:ArchiveOnBuild=true \
           -p:BuildIpa=true \
           -p:CodesignRequire=false \
           -p:CodesignKey="" \
           -p:CodesignProvision="" \
-          -p:CheckEolTargetFramework=false \
           -o $RUNNER_TEMP/output
 
     - name: Upload IPA Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: nswallet-net8-ipa
+        name: nswallet-net10-ipa
         path: ${{ runner.temp }}/output/*.ipa
