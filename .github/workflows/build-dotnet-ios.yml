@@ -30,7 +30,7 @@ jobs:
       run: dotnet restore ./src/NSWallet/iOS/NSWallet.iOS.csproj -p:ValidateXcodeVersion=false
       
     - name: Package Microsoft.Maui.Controls.Compatibility  
-      run: dotnet add ./src/NSWallet/iOS/NSWallet.iOS.csproj package Microsoft.Maui.Controls.Compatibility
+      run: dotnet add ./src/NSWallet/iOS/NSWallet.iOS.csproj package Microsoft.Maui.Controls.Compatibility --version 10.0.0
       
     - name: Publish iOS App (Unsigned IPA)
       run: |
