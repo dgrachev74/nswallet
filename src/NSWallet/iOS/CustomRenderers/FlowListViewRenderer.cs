@@ -1,9 +1,9 @@
 ﻿using System;
 using DLToolkit.Forms.Controls;
 using NSWallet.iOS;
+using Microsoft.Maui.Controls.Compatibility;
+using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
 using UIKit;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.iOS;
 
 [assembly: ExportRenderer(typeof(FlowListView), typeof(FlowListViewRenderer))]
 namespace NSWallet.iOS
